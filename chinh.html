@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tu Tiên Giới • Đại Sảnh</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Noto+Sans+SC:wght@500;700;900&display=swap');
+
+    :root{
+      --cyan: #7be4ff;
+      --purple: #d4b3ff;
+      --gold: #ffd37b;
+      --dark: #030a1a;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      height:100vh;
+      background: radial-gradient(circle at 20% 30%, rgba(123,228,255,0.25), transparent 50%),
+                  radial-gradient(circle at 80% 70%, rgba(255,211,123,0.2), transparent 50%),
+                  #030a1a;
+      font-family:'Noto Sans SC', sans-serif;
+      color:white;overflow:hidden;position:relative;
+    }
+    canvas{position:absolute;inset:0;z-index:1}
+
+    .main-hall{
+      position:relative;z-index:10;
+      width:100%;height:100%;
+      display:grid;
+      grid-template-rows: 140px 1fr 120px;
+      padding:20px;
+      gap:15px;
+    }
+
+    /* HEADER - giữ nguyên đẹp như cũ */
+    .header{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:0 30px;
+      background:rgba(3,10,26,0.6);
+      border:2px solid rgba(123,228,255,0.4);
+      border-radius:25px;
+      backdrop-filter:blur(10px);
+      position:relative;
+    }
+    .avatar{
+      width:100px;height:100px;
+      border-radius:50%;
+      object-fit:cover;
+      border:4px solid var(--cyan);
+      box-shadow:0 0 50px rgba(123,228,255,0.8);
+      cursor:pointer;
+      animation:float 6s ease-in-out infinite;
+    }
+    .player-info{text-align:center;flex:1;}
+    .dao-hieu{
+      font-size:42px;font-weight:900;letter-spacing:4px;
+      background:linear-gradient(90deg,#fff,var(--cyan),var(--gold));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .level{
+      font-size:28px;margin-top:8px;
+      background:linear-gradient(90deg,var(--purple),var(--gold));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+
+    /* Nút Setting mới - lơ lửng bên phải */
+    .settings-btn{
+      position:absolute;top:50%;right:30px;transform:translateY(-50%);
+      width:70px;height:70px;
+      background:linear-gradient(135deg,var(--purple),var(--gold));
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:38px;cursor:pointer;
+      box-shadow:0 0 50px rgba(212,179,255,0.7);
+      animation:float 6s ease-in-out infinite;
+      z-index:20;
+      transition:all .4s;
+    }
+    .settings-btn:hover{transform:translateY(-50%) scale(1.2) rotate(90deg);}
+
+    /* MENU CHÍNH - giữ nguyên 6 ô đẹp như cũ */
+    .menu-grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:25px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    .menu-btn{
+      aspect-ratio:1;
+      background:rgba(3,10,26,0.7);
+      border:3px solid var(--cyan);
+      border-radius:30px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      cursor:pointer;
+      transition:all .4s;
+      box-shadow:0 0 40px rgba(123,228,255,0.3);
+      position:relative;overflow:hidden;
+    }
+    .menu-btn::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,transparent 30%,rgba(123,228,255,0.2));
+      transform:translateX(-100%);transition:transform .6s;
+    }
+    .menu-btn:hover::before{transform:translateX(100%);}
+    .menu-btn:hover{
+      transform:translateY(-15px) scale(1.05);
+      border-color:var(--gold);
+      box-shadow:0 20px 70px rgba(255,215,123,0.6);
+    }
+    .menu-icon{font-size:70px;margin-bottom:15px;text-shadow:0 0 30px var(--cyan);}
+    .menu-text{
+      font-size:26px;font-weight:900;letter-spacing:3px;
+      background:linear-gradient(90deg,var(--cyan),var(--gold));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+
+    /* FOOTER - giữ nguyên */
+    .footer{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:0 40px;
+      background:rgba(3,10,26,0.6);
+      border:2px solid rgba(123,228,255,0.3);
+      border-radius:25px;
+      backdrop-filter:blur(10px);
+    }
+    .task-bar{
+      flex:1;margin:0 30px;
+      padding:15px 30px;
+      background:rgba(212,179,255,0.15);
+      border-radius:50px;
+      font-size:22px;letter-spacing:2px;
+      text-align:center;
+      animation:pulse 4s infinite;
+    }
+    .quick-btn{
+      width:80px;height:80px;
+      background:linear-gradient(135deg,var(--purple),var(--gold));
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:40px;
+      cursor:pointer;
+      box-shadow:0 0 40px rgba(212,179,255,0.7);
+      transition:all .4s;
+    }
+    .quick-btn:hover{transform:scale(1.2) rotate(20deg);}
+
+    /* POPUP SETTING - đẹp lung linh */
+    .overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:999;
+      display:none;align-items:center;justify-content:center;
+    }
+    .setting-panel{
+      width:90%;max-width:520px;
+      background:rgba(3,10,26,0.95);
+      border:3px solid var(--cyan);
+      border-radius:35px;
+      padding:40px;
+      text-align:center;
+      box-shadow:0 0 100px rgba(123,228,255,0.7);
+      animation:float 8s ease-in-out infinite;
+    }
+    .setting-title{
+      font-family:'Cinzel Decorative', serif;
+      font-size:60px;margin-bottom:30px;
+      background:linear-gradient(90deg,var(--cyan),var(--purple),var(--gold));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .setting-item{margin:25px 0;}
+    input[type="file"],input[type="text"]{
+      width:100%;padding:16px;
+      background:rgba(255,255,255,0.1);
+      border:2px solid var(--cyan);
+      border-radius:50px;color:white;font-size:18px;
+    }
+    .btn-small{
+      padding:14px 40px;margin:8px;
+      font-size:20px;font-weight:900;letter-spacing:3px;
+      border:none;border-radius:50px;cursor:pointer;
+    }
+    .btn-gift{background:var(--gold);color:#000;}
+    .btn-logout{background:#ff6b6b;color:white;}
+    .social-links{
+      display:flex;justify-content:center;gap:25px;margin-top:35px;
+    }
+    .social-btn{
+      width:70px;height:70px;
+      background:linear-gradient(135deg,var(--cyan),var(--purple));
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      font-size:36px;box-shadow:0 0 40px rgba(123,228,255,0.6);
+      cursor:pointer;
+    }
+
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+    @keyframes pulse{0%,100%{box-shadow:0 0 20px rgba(212,179,255,0.4)}50%{box-shadow:0 0 40px rgba(212,179,255,0.8)}}
+
+    @media(max-width:1024px){.menu-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:768px){
+      .header{flex-direction:column;gap:20px;padding:20px}
+      .settings-btn{right:auto;transform:none;position:static;margin:10px;}
+      .menu-grid{grid-template-columns:1fr 1fr;}
+      .footer{flex-direction:column;gap:15px;padding:20px}
+      .task-bar{margin:10px 0;}
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="stars"></canvas>
+
+  <div class="main-hall">
+
+    <!-- Header -->
+    <div class="header">
+      <img src="" id="playerAvatar" class="avatar" alt="Avatar" onclick="document.getElementById('avatarInput').click()">
+      <div class="player-info">
+        <div class="dao-hieu" id="playerName">Đang tải đạo hiệu...</div>
+        <div class="level">Luyện Khí tầng 1 • Linh lực: 999</div>
+      </div>
+      <div class="settings-btn" onclick="openSetting()">⚙</div>
+    </div>
+
+    <!-- Menu 6 ô -->
+    <div class="menu-grid">
+      <div class="menu-btn" onclick="goToChinh('congphap.html')"><div class="menu-icon">書</div><div class="menu-text">CÔNG PHÁP</div></div>
+      <div class="menu-btn" onclick="goToChinh('dotpha.html')"><div class="menu-icon">氣</div><div class="menu-text">ĐỘT PHÁ</div></div>
+      <div class="menu-btn" onclick="goToChinh('phoban.html')"><div class="menu-icon">魔</div><div class="menu-text">PHÓ BẢN</div></div>
+      <div class="menu-btn" onclick="goToChinh('thuongdiem.html')"><div class="menu-icon">寶</div><div class="menu-text">THƯƠNG ĐIẾM</div></div>
+      <div class="menu-btn" onclick="goToChinh('bangxephang.html')"><div class="menu-icon">榜</div><div class="menu-text">BẢNG XẾP HẠNG</div></div>
+      <div class="menu-btn" onclick="goToChinh('tongmon.html')"><div class="menu-icon">宗</div><div class="menu-text">TÔNG MÔN</div></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="quick-btn">袋</div>
+      <div class="task-bar">Nhiệm vụ chính: Thu thập 10 gốc Linh Thảo cấp 1 (0/10)</div>
+      <div class="quick-btn">聊</div>
+    </div>
+  </div>
+
+  <!-- Popup Setting -->
+  <div class="overlay" id="settingOverlay">
+    <div class="setting-panel">
+      <h2 class="setting-title">CÀI ĐẶT</h2>
+
+      <div class="setting-item">
+        <label style="font-size:20px;margin-bottom:10px;display:block;">Đổi Avatar</label>
+        <input type="file" id="avatarInput" accept="image/*" onchange="changeAvatar(event)">
+      </div>
+
+      <div class="setting-item">
+        <button class="btn-small" id="soundBtn" onclick="toggleSound()" style="background:var(--cyan);color:#000;">
+          Âm thanh: ON
+        </button>
+      </div>
+
+      <div class="setting-item">
+        <input type="text" id="giftcode" placeholder="Nhập Giftcode...">
+        <button class="btn-small btn-gift" onclick="redeemCode()">NHẬN THƯỞNG</button>
+      </div>
+
+      <button class="btn-small btn-logout" onclick="logout()">ĐĂNG XUẤT</button>
+
+      <div class="social-links">
+        <div class="social-btn" onclick="window.open('https://fb.com/tutienGioi','_blank')">f</div>
+        <div class="social-btn" onclick="window.open('https://youtube.com/@tutienGioi','_blank')">▶</div>
+        <div class="social-btn" onclick="window.open('https://zalo.me/g/tutienGioi','_blank')">💬</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Starfield
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = innerWidth;
+    let h = canvas.height = innerHeight;
+    const stars = [];
+    for(let i=0;i<1200;i++){
+      stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2,a:Math.random()*0.8+0.2});
+    }
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      stars.forEach(s=>{
+        ctx.fillStyle=`rgba(255,255,255,${s.a})`;
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+    window.addEventListener('resize',()=>{w=canvas.width=innerWidth;h=canvas.height=innerHeight;});
+
+    // Lấy tên người chơi từ localStorage (từ login)
+    const currentUser = localStorage.getItem('currentUser') || 'Vô Danh Tiên';
+    document.getElementById('playerName').textContent = currentUser;
+
+    const avatarImg = document.getElementById('playerAvatar');
+    const savedAvatar = localStorage.getItem('playerAvatar');
+    if(savedAvatar) avatarImg.src = savedAvatar;
+    else avatarImg.src = 'https://i.ibb.co.com/9bY8YhL/default-avatar.png';
+
+    // Âm thanh
+    let soundOn = localStorage.getItem('soundOn') !== 'false';
+    document.getElementById('soundBtn').textContent = soundOn ? 'Âm thanh: ON' : 'Âm thanh: OFF';
+
+    // Setting functions
+    function openSetting(){ document.getElementById('settingOverlay').style.display = 'flex'; }
+    function closeSetting(){ document.getElementById('settingOverlay').style.display = 'none'; }
+    window.addEventListener('click', e => {
+      if(e.target === document.getElementById('settingOverlay')) closeSetting();
+    });
+
+    function changeAvatar(e){
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const url = ev.target.result;
+          avatarImg.src = url;
+          localStorage.setItem('playerAvatar', url);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function toggleSound(){
+      soundOn = !soundOn;
+      localStorage.setItem('soundOn', soundOn);
+      document.getElementById('soundBtn').textContent = soundOn ? 'Âm thanh: ON' : 'Âm thanh: OFF';
+    }
+
+    function redeemCode(){
+      const code = document.getElementById('giftcode').value.trim();
+      if(!code) return alert('Hãy nhập giftcode!');
+      alert(`Đã nhận thành công!\nMã: ${code}\nPhần thưởng: 9999 Linh Thạch + Phi Kiếm Thượng Cổ`);
+      document.getElementById('giftcode').value = '';
+    }
+
+    function logout(){
+      if(confirm('Đạo hữu thật sự muốn rời Tiên Giới?')){
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('playerAvatar');
+        window.location.href = 'index.html';
+      }
+    }
+
+    function goToChinh(page) {
+      document.body.style.transition = 'opacity 1s';
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        window.location.href = '../chinh/' + page;
+      }, 1100);
+    }
+  </script>
+</body>
+</html>
