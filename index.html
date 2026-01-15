@@ -1,57 +1,191 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vực giới mộng</title>
-    <link rel="icon" href="https://tse3.mm.bing.net/th/id/OIP.Sc-pGDkmKH6dLZgbWk-3uAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3.png" tylpe="image/png">
-    <link rel="stylesheet" href="index.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tu Tiên Giới — Vũ Trụ Huyền Ảo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Noto+Sans+SC:wght@500;700;900&display=swap');
+
+    :root{
+      --cyan: #7be4ff;
+      --purple: #d4b3ff;
+      --gold: #ffd37b;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      height:100vh;
+      background: radial-gradient(circle at 20% 30%, rgba(123,228,255,0.2), transparent 40%),
+                  radial-gradient(circle at 80% 70%, rgba(255,211,123,0.15), transparent 40%),
+                  #030a1a;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      font-family:'Noto Sans SC', sans-serif;
+      color:white;overflow:hidden;
+      position:relative;
+    }
+    canvas{position:absolute;inset:0;z-index:1}
+
+    /* Tất cả bay tự do - không còn khung */
+    .content{z-index:10;position:relative;text-align:center}
+
+    /* Ẩn tất cả lúc đầu */
+    .logo, .title, .tagline, .btn {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    /* Animation hiện lần lượt */
+    .logo   { animation: fadeUp 1s ease-out 0.4s forwards; }
+    .title  { animation: fadeUp 1.2s ease-out 1.2s forwards, glow 4s ease-in-out 2.4s infinite alternate; }
+    .tagline{ animation: fadeUp 1s ease-out 2.6s forwards; }
+    .btn    { animation: fadeUp 1s ease-out 3.2s forwards, pulse 2s ease-out 4.2s infinite; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 60px rgba(123,228,255,0.7); }
+      to { text-shadow: 0 0 90px rgba(123,228,255,1), 0 0 120px rgba(201,168,255,0.6); }
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .logo{
+      display:flex;align-items:center;justify-content:center;gap:18px;
+      margin-bottom:30px;
+    }
+    .icon{
+      width:80px;height:80px;
+      background:linear-gradient(135deg,var(--cyan),var(--gold));
+      border-radius:22px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:38px;font-weight:900;color:#020b1a;
+      box-shadow:0 0 50px rgba(123,228,255,0.6);
+      animation:float 6s ease-in-out infinite;
+    }
+
+    .game-name{
+      font-size:52px;font-weight:900;letter-spacing:4px;
+      background:linear-gradient(90deg,#fff,var(--cyan));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+
+    .title{
+      font-family:'Cinzel Decorative', serif;
+      font-size:128px;font-weight:900;
+      letter-spacing:12px;
+      white-space:nowrap;
+      background:linear-gradient(90deg,#fff,var(--cyan) 25%,var(--purple) 50%,var(--gold) 75%,#fff);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      text-shadow:0 0 60px rgba(123,228,255,0.7);
+      margin:20px 0;
+    }
+
+    .tagline{
+      font-size:32px;font-weight:700;letter-spacing:8px;
+      color:#ffeb99;
+      text-shadow:0 0 20px rgba(255,215,123,0.6);
+      margin:30px 0 60px;
+    }
+
+    .btn{
+      padding:20px 70px;
+      font-size:30px;font-weight:900;letter-spacing:5px;
+      color:#020b1a;
+      background:linear-gradient(90deg,var(--cyan),var(--gold));
+      border:none;border-radius:60px;
+      cursor:pointer;
+      box-shadow:0 15px 50px rgba(123,228,255,0.5);
+      transition:all .4s;
+    }
+    .btn:hover{
+      transform:translateY(-10px) scale(1.05);
+      box-shadow:0 25px 70px rgba(123,228,255,0.7);
+    }
+
+    .version{
+      margin-top:50px;font-size:16px;opacity:0.7;letter-spacing:2px;
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-20px)}
+    }
+
+    /* Responsive vẫn đẹp */
+    @media(max-width:960px){
+      .title{font-size:100px;letter-spacing:8px}
+    }
+    @media(max-width:768px){
+      .title{font-size:80px;letter-spacing:6px}
+      .tagline{font-size:26px}
+      .btn{font-size:26px;padding:18px 60px}
+      .game-name{font-size:42px}
+    }
+    @media(max-width:480px){
+      .title{font-size:60px;letter-spacing:4px}
+      .icon{width:60px;height:60px;font-size:30px}
+      .logo{gap:12px}
+      .game-name{font-size:36px}
+    }
+  </style>
 </head>
 <body>
-    <header meta charset="UTF-8">
-            <h1 class="login">VỰC GIỚI MỘNG</h1>
-   </header>
-   <br/>
-    <br/>
-     <br/>
-      <br/>
-       <br/>
-        <br/>
-         <br/>
-          <br/>
-           <br/>
-            <br/>
-              <br/>
-               <br/>
-                <br/>
-                 <br/>
-                  <br/>
 
-      <p class="login1">LOGIN GIOI VUC</p>
-    <div>
-    <form 
-        action="index2.html"
-        target="_blank"
-        method="POST"
-        class="login2" >
+  <canvas id="stars"></canvas>
 
-        <label for="username">username:</label>
-        <br />
-        <input type="text" id="username" name="username"/>
-        <br />
-        <label for="email">email:</label>
-        <br />
-        <input type="email" id="email" name="email"/>
-        <br />
-        <label for="passworld">passworld:</label>
-        <br />
-        <input type="password" id="passworld" name="passworld"/>
-        <br />
-        <br />
-        <button class="submit">TIEN VAO GIOI VUC</button>
-    </form>
+  <div class="content">
+    <div class="logo">
+      <div class="game-name">Tu Tiên Giới</div>
     </div>
 
+    <h1 class="title">Vũ Trụ Huyền Ảo</h1>
 
+    <div class="tagline">Vạn cổ trường sinh • Nhất niệm thành tiên</div>
+
+    <button class="btn" id="startBtn">BẮT ĐẦU HÀNH TRÌNH</button>
+  </div>
+
+  <script>
+    // Starfield + nhẹ nhàng lấp lánh
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = innerWidth;
+    let h = canvas.height = innerHeight;
+    const stars = [];
+
+    for(let i = 0; i < 1000; i++){
+      stars.push({
+        x: Math.random()*w,
+        y: Math.random()*h,
+        r: Math.random()*1.8,
+        a: Math.random()*0.8 + 0.2
+      });
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      stars.forEach(s=>{
+        ctx.fillStyle = `rgba(255,255,255,${s.a})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    window.addEventListener('resize',()=>{
+      w=canvas.width=innerWidth; h=canvas.height=innerHeight;
+    });
+
+    document.getElementById('startBtn').addEventListener('click',()=>{
+      document.body.style.transition = 'opacity 1s';
+      document.body.style.opacity = '0';
+      setTimeout(()=>alert('Đang mở Game...'), 1000);
+    });
+  </script>
 </body>
 </html>
