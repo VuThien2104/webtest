@@ -181,11 +181,23 @@
       w=canvas.width=innerWidth; h=canvas.height=innerHeight;
     });
 
-    document.getElementById('startBtn').addEventListener('click',()=>{
-      document.body.style.transition = 'opacity 1s';
-      document.body.style.opacity = '0';
-      setTimeout(()=>alert('Đang mở Game...'), 1000);
-    });
+    document.getElementById('startBtn').addEventListener('click', () => {
+  const currentUser = localStorage.getItem('currentUser');
+
+  if (currentUser) {
+    // Nếu đã đăng nhập → nhảy thẳng vào chinh.html
+    fadeAndGo('chinh.html');  // ← LIÊN KẾT ĐẾN MAIN
+  } else {
+    // Chưa đăng nhập → chuyển sang login.html
+    fadeAndGo('login.html');  // ← LIÊN KẾT ĐẾN LOGIN
+  }
+});
+
+function fadeAndGo(url) {
+  document.body.style.transition = 'opacity 1.5s';
+  document.body.style.opacity = '0';
+  setTimeout(() => { window.location.href = url; }, 1600);  // ← Đây là lệnh chuyển trang chính
+}
   </script>
 </body>
 </html>
