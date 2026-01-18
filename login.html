@@ -1,249 +1,242 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Đăng Nhập • Tu Tiên Giới</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Noto+Sans+SC:wght@500;700;900&display=swap');
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tu Tiên Giới • Đăng Nhập</title>
 
-    :root{
-      --cyan: #7be4ff;
-      --purple: #d4b3ff;
-      --gold: #ffd37b;
-      --red: #ff6b6b;
-    }
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{
-      height:100vh;
-      background: radial-gradient(circle at 20% 30%, rgba(123,228,255,0.2), transparent 40%),
-                  radial-gradient(circle at 80% 70%, rgba(255,211,123,0.15), transparent 40%),
-                  #030a1a;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      font-family:'Noto Sans SC', sans-serif;
-      color:white;overflow:hidden;
-      position:relative;
-    }
-    canvas{position:absolute;inset:0;z-index:1}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Noto+Sans+SC:wght@500;700;900&display=swap');
 
-    .login-container{
-      z-index:10;position:relative;text-align:center;
-      padding:50px 80px;
-      background:rgba(3,10,26,0.7);
-      border-radius:30px;
-      border:2px solid rgba(123,228,255,0.3);
-      box-shadow:0 0 80px rgba(123,228,255,0.4);
-      animation:float 8s ease-in-out infinite;
-    }
+:root{
+  --cyan:#7be4ff;
+  --gold:#ffd37b;
+  --red:#ff6b6b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  height:100vh;
+  background:#030a1a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Noto Sans SC',sans-serif;
+  color:white;
+  overflow:hidden;
+}
+canvas{position:absolute;inset:0}
 
-    .logo{
-      display:flex;align-items:center;justify-content:center;gap:18px;
-      margin-bottom:30px;
-    }
-    .icon{
-      width:80px;height:80px;
-      background:linear-gradient(135deg,var(--cyan),var(--gold));
-      border-radius:22px;
-      display:flex;align-items:center;justify-content:center;
-      font-size:38px;font-weight:900;color:#020b1a;
-      box-shadow:0 0 50px rgba(123,228,255,0.6);
-    }
-    .game-name{
-      font-size:48px;font-weight:900;letter-spacing:4px;
-      background:linear-gradient(90deg,#fff,var(--cyan));
-      -webkit-background-clip:text;background-clip:text;color:transparent;
-    }
+.login-container{
+  z-index:10;
+  padding:45px 70px;
+  background:rgba(3,10,26,.75);
+  border-radius:28px;
+  border:2px solid rgba(123,228,255,.35);
+  box-shadow:0 0 70px rgba(123,228,255,.45);
+  text-align:center;
+}
 
-    h1{
-      font-family:'Cinzel Decorative', serif;
-      font-size:72px;font-weight:900;
-      letter-spacing:8px;
-      background:linear-gradient(90deg,var(--cyan),var(--purple),var(--gold));
-      -webkit-background-clip:text;background-clip:text;color:transparent;
-      text-shadow:0 0 60px rgba(123,228,255,0.7);
-      margin-bottom:40px;
-    }
+.logo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+.icon{
+  width:70px;height:70px;
+  background:linear-gradient(135deg,var(--cyan),var(--gold));
+  border-radius:20px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:34px;font-weight:900;color:#020b1a;
+}
+.game-name{
+  font-size:42px;
+  font-weight:900;
+  letter-spacing:4px;
+  background:linear-gradient(90deg,#fff,var(--cyan));
+  -webkit-background-clip:text;
+  color:transparent;
+}
 
-    .input-group{
-      margin:25px 0;
-      position:relative;
-    }
-    input{
-      width:380px;padding:18px 25px;
-      font-size:20px;font-weight:700;
-      background:rgba(255,255,255,0.1);
-      border:2px solid var(--cyan);
-      border-radius:50px;
-      color:white;
-      outline:none;
-      transition:all .4s;
-    }
-    input:focus{
-      border-color:var(--gold);
-      box-shadow:0 0 30px rgba(255,215,123,0.5);
-    }
-    input::placeholder{color:rgba(255,255,255,0.6)}
+h1{
+  font-family:'Cinzel Decorative',serif;
+  font-size:60px;
+  margin:25px 0 30px;
+  background:linear-gradient(90deg,var(--cyan),var(--gold));
+  -webkit-background-clip:text;
+  color:transparent;
+}
 
-    .btn-login{
-      margin-top:30px;
-      padding:18px 90px;
-      font-size:28px;font-weight:900;letter-spacing:5px;
-      color:#020b1a;
-      background:linear-gradient(90deg,var(--cyan),var(--gold));
-      border:none;border-radius:60px;
-      cursor:pointer;
-      box-shadow:0 15px 50px rgba(123,228,255,0.5);
-      transition:all .4s;
-    }
-    .btn-login:hover{
-      transform:translateY(-8px) scale(1.05);
-      box-shadow:0 25px 70px rgba(123,228,255,0.7);
-    }
+.input-group{margin:18px 0;position:relative}
+input{
+  width:360px;
+  padding:16px 22px;
+  font-size:18px;
+  background:rgba(255,255,255,.1);
+  border:2px solid var(--cyan);
+  border-radius:40px;
+  color:white;
+  outline:none;
+}
+input::placeholder{color:rgba(255,255,255,.6)}
 
-    /* Thông báo lỗi */
-    .alert{
-      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-      background:rgba(255,107,107,0.95);
-      color:white;padding:25px 60px;
-      font-size:28px;font-weight:700;letter-spacing:3px;
-      border-radius:20px;
-      border:3px solid var(--red);
-      box-shadow:0 0 80px rgba(255,107,107,0.7);
-      z-index:9999;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .6s;
-    }
-    .alert.show{opacity:1}
+.toggle-pass{
+  position:absolute;
+  right:20px;
+  top:50%;
+  transform:translateY(-50%);
+  cursor:pointer;
+  opacity:.7;
+}
 
-    @keyframes float{
-      0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-15px)}
-    }
+.btn{
+  margin-top:25px;
+  padding:16px 80px;
+  font-size:24px;
+  font-weight:900;
+  background:linear-gradient(90deg,var(--cyan),var(--gold));
+  border:none;
+  border-radius:50px;
+  cursor:pointer;
+}
 
-    @media(max-width:768px){
-      .login-container{padding:40px 30px}
-      h1{font-size:56px}
-      input{width:320px}
-    }
-    @media(max-width:480px){
-      h1{font-size:44px;letter-spacing:4px}
-      input{width:280px;font-size:18px;padding:16px 20px}
-      .btn-login{font-size:24px;padding:16px 70px}
-      .icon{width:60px;height:60px;font-size:30px}
-      .game-name{font-size:36px}
-    }
-  </style>
+.switch{
+  margin-top:18px;
+  font-size:16px;
+  cursor:pointer;
+  opacity:.8;
+}
+
+.oauth{
+  margin-top:25px;
+  display:flex;
+  gap:12px;
+  justify-content:center;
+}
+.oauth button{
+  padding:12px 18px;
+  border-radius:30px;
+  border:none;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.alert{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(255,107,107,.95);
+  padding:20px 45px;
+  border-radius:18px;
+  font-size:22px;
+  opacity:0;
+  pointer-events:none;
+  transition:.4s;
+}
+.alert.show{opacity:1}
+</style>
 </head>
+
 <body>
 
-  <canvas id="stars"></canvas>
+<canvas id="stars"></canvas>
 
-  <div class="login-container">
-    <div class="logo">
-      <div class="icon">仙</div>
-      <div class="game-name">Tu Tiên Giới</div>
-    </div>
+<div class="login-container">
 
-    <h1>Đăng Nhập</h1>
-
-    <div class="input-group">
-      <input type="text" id="username" placeholder="Đạo hiệu (tên trong game)" maxlength="12" autocomplete="off">
-    </div>
-    <div class="input-group">
-      <input type="password" id="password" placeholder="Mật khẩu linh khí" maxlength="20">
-    </div>
-    <div class="input-group">
-      <input type="password" id="password2" placeholder="Nhập lại mật khẩu">
-    </div>
-
-    <button class="btn-login" id="loginBtn">NHẬP MÔN</button>
+  <div class="logo">
+    <div class="icon">仙</div>
+    <div class="game-name">Tu Tiên Giới</div>
   </div>
 
-  <!-- Thông báo lỗi -->
-  <div class="alert" id="alert"></div>
+  <h1 id="title">Đăng Nhập</h1>
 
-  <script>
-    // Starfield giống hệt trang trước
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let w = canvas.width = innerWidth;
-    let h = canvas.height = innerHeight;
-    const stars = [];
+  <div class="input-group">
+    <input id="username" placeholder="Gmail / Đạo hiệu">
+  </div>
 
-    for(let i = 0; i < 1000; i++){
-      stars.push({
-        x: Math.random()*w,
-        y: Math.random()*h,
-        r: Math.random()*1.8,
-        a: Math.random()*0.8 + 0.2
-      });
-    }
-    function draw(){
-      ctx.clearRect(0,0,w,h);
-      stars.forEach(s=>{
-        ctx.fillStyle = `rgba(255,255,255,${s.a})`;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-        ctx.fill();
-      });
-      requestAnimationFrame(draw);
-    }
-    draw();
-    window.addEventListener('resize',()=>{w=canvas.width=innerWidth; h=canvas.height=innerHeight;});
+  <div class="input-group">
+    <input id="password" type="password" placeholder="Mật khẩu">
+    <span class="toggle-pass" onclick="togglePass()">👁</span>
+  </div>
 
-    // Kiểm tra đăng nhập
-    const savedUsers = JSON.parse(localStorage.getItem('tuTienUsers') || '{}');
+  <div class="input-group" id="repass" style="display:none">
+    <input id="password2" type="password" placeholder="Nhập lại mật khẩu">
+  </div>
 
-    document.getElementById('loginBtn').addEventListener('click', () => {
-      const username = document.getElementById('username').value.trim();
-      const pass1 = document.getElementById('password').value;
-      const pass2 = document.getElementById('password2').value;
-      const alertBox = document.getElementById('alert');
+  <button class="btn" onclick="submit()" id="mainBtn">NHẬP MÔN</button>
 
-      if (!username || !pass1 || !pass2) {
-        showAlert('Vui lòng nhập đầy đủ đạo hiệu và mật khẩu!');
-        return;
-      }
-      if (pass1 !== pass2) {
-        showAlert('Hai lần nhập mật khẩu không khớp!');
-        return;
-      }
-      if (username.length < 2 || username.length > 12) {
-        showAlert('Đạo hiệu phải từ 2-12 ký tự!');
-        return;
-      }
-      if (savedUsers[username]) {
-        showAlert('Đạo hiệu đã tồn tại! Hãy chọn tên khác.');
-        return;
-      }
+  <div class="switch" onclick="toggleMode()" id="switchText">
+    Chưa có đạo hiệu? → Đăng ký
+  </div>
 
-      // Đăng ký thành công
-      savedUsers[username] = pass1;
-      localStorage.setItem('tuTienUsers', JSON.stringify(savedUsers));
-      localStorage.setItem('currentUser', username);
+  <div class="oauth">
+    <button onclick="oauth('Google')">Google</button>
+    <button onclick="oauth('Facebook')">Facebook</button>
+    <button onclick="oauth('GitHub')">GitHub</button>
+  </div>
 
-      alertBox.textContent = 'Đăng ký thành công! Đang khai mở linh căn...';
-      alertBox.style.background = 'rgba(123,228,255,0.95)';
-      alertBox.style.borderColor = '#7be4ff';
-      alertBox.classList.add('show');
+</div>
 
-      setTimeout(() => {
-        document.body.style.transition = 'opacity 1.5s';
-        document.body.style.opacity = '0';
-        setTimeout(() => {
-          // Chuyển về trang game chính của bạnn
-          window.location.href = 'chinh.html'; // đổi tên file nếu cần
-        }, 1600);
-      }, 1500);
-    });
+<div class="alert" id="alert"></div>
 
-    function showAlert(msg) {
-      const alertBox = document.getElementById('alert');
-      alertBox.textContent = msg;
-      alertBox.classList.add('show');
-      setTimeout(() => alertBox.classList.remove('show'), 3000);
-    }
-  </script>
+<script>
+/* STAR */
+const c=document.getElementById('stars'),x=c.getContext('2d');
+let w=c.width=innerWidth,h=c.height=innerHeight;
+const s=[...Array(800)].map(()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5}));
+(function d(){x.clearRect(0,0,w,h);s.forEach(e=>{x.beginPath();x.arc(e.x,e.y,e.r,0,7);x.fillStyle='white';x.fill()});requestAnimationFrame(d)})();
+
+/* AUTH */
+let isLogin=true;
+const users=JSON.parse(localStorage.getItem('tuTienUsers')||'{}');
+
+function toggleMode(){
+  isLogin=!isLogin;
+  document.getElementById('title').innerText=isLogin?'Đăng Nhập':'Đăng Ký';
+  document.getElementById('mainBtn').innerText=isLogin?'NHẬP MÔN':'KHAI LINH';
+  document.getElementById('repass').style.display=isLogin?'none':'block';
+  document.getElementById('switchText').innerText=isLogin?'Chưa có đạo hiệu? → Đăng ký':'Đã có đạo hiệu? → Đăng nhập';
+}
+
+function togglePass(){
+  const p=document.getElementById('password');
+  p.type=p.type==='password'?'text':'password';
+}
+
+function show(msg){
+  const a=document.getElementById('alert');
+  a.innerText=msg;a.classList.add('show');
+  setTimeout(()=>a.classList.remove('show'),3000);
+}
+
+function submit(){
+  const u=username.value.trim();
+  const p=password.value;
+  const p2=password2?.value;
+
+  if(!u||!p) return show('Thiếu thông tin');
+
+  if(isLogin){
+    if(!users[u]||users[u]!==p) return show('Sai đạo hiệu hoặc mật khẩu');
+    localStorage.setItem('currentUser',u);
+    show('Đăng nhập thành công!');
+    setTimeout(()=>location.href='chinh.html',1200);
+  }else{
+    if(p!==p2) return show('Mật khẩu không khớp');
+    if(users[u]) return show('Đạo hiệu đã tồn tại');
+    users[u]=p;
+    localStorage.setItem('tuTienUsers',JSON.stringify(users));
+    show('Khai linh thành công! Hãy đăng nhập');
+    toggleMode();
+  }
+}
+
+function oauth(type){
+  show('Đăng nhập '+type+' (demo)');
+  // Sau này gắn Firebase / Supabase OAuth tại đây
+}
+</script>
 </body>
 </html>
